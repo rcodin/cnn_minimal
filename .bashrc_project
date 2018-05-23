@@ -1,6 +1,8 @@
+export SRC_DIR=/home/roni/project/cnn_minimal
+
 export PATH=/opt/intel/bin:$PATH
-export LIBRARY_PATH=/home/roni/project/cnn_minimal/lib:$LIBRARY_PATH
-export LD_LIBRARY_PATH=/home/roni/project/cnn_minimal/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=$SRC_DIR/lib:$LIBRARY_PATH
+export LD_LIBRARY_PATH=$SRC_DIR/lib:$LD_LIBRARY_PATH
 export C_INCLUDE_PATH=/opt/intel/mkl/include:$C_INCLUDE_PATH
 export CPLUS_INCLUDE_PATH=/opt/intel/mkl/include:$CPLUS_INCLUDE_PATH
 export C_INCLUDE_PATH=/opt/intel/include:$C_INCLUDE_PATH

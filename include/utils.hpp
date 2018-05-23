@@ -27,4 +27,8 @@ void load_tile(float *in, Data_conf input_conf, TILE_BASE tile_idx, int num_tile
 void save_tile(float *in, Data_conf input_conf, TILE_BASE tile_base,
 					float *out, Data_conf output_conf);
 
+Data_conf get_input_dependency(Data_conf output_conf, Conv_conf conv_cfg);
+
+void create_rand_array(float *in, int size);
+
 #endif

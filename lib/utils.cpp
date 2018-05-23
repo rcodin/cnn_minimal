@@ -127,8 +127,8 @@ void load_tile(float *in, Data_conf input_conf, TILE_BASE tile_idx, int num_tile
     	for (int out_w_idx = 0; out_w_idx < output_conf.w; out_w_idx++) {
     		for (int c_idx = 0; c_idx < output_conf.c; c_idx++) {
 
-    			int in_h_idx = h_base + out_h_idx - 1;
-    			int in_w_idx = w_base + out_w_idx - 1;
+    			int in_h_idx = h_base + out_h_idx - conv_cfg.pad;
+    			int in_w_idx = w_base + out_w_idx - conv_cfg.pad;
 
     			int out_idx = (out_h_idx * output_conf.w + out_w_idx) * output_conf.c + c_idx;
 	    		int in_idx = (in_h_idx * input_conf.w + in_w_idx) * input_conf.c + c_idx;
@@ -143,19 +143,6 @@ void load_tile(float *in, Data_conf input_conf, TILE_BASE tile_idx, int num_tile
     	}
     }
 
-	// int h_base = tile_idx.h * output_conf.h;
-	// int w_base = tile_idx.h * output_conf.w;
-
-	// for (int h_idx = 0; h_idx < output_conf.h; h_idx++) {
-	// 	for (int w_idx = 0; w_idx < output_conf.w; w_idx++) {
-	// 		for (int c_idx = 0; c_idx < output_conf.c; c_idx++) {
-	// 			int in_h_idx = h_base + h_idx;
-	// 			int in_w_idx = w_base + w_idx;
-	// 			out[(h_idx * output_conf.w + w_idx) * output_conf.c + c_idx] = 
-	// 								in[(in_h_idx * input_conf.w + in_w_idx) * input_conf.c + c_idx];
-	// 		}
-	// 	}
-	// }
 }
 
 //save the tile when we have merge them to creatw the full output
@@ -177,21 +164,17 @@ void save_tile(float *in, Data_conf input_conf, TILE_BASE tile_base,
     		}
     	}
     }
+}
 
-	// int h_base = tile_idx.h * input_conf.h;
-	// int w_base = tile_idx.w * input_conf.w;
 
-	// for (int h_idx = 0; h_idx < input_conf.h; h_idx++) {
-	// 	for (int w_idx = 0; w_idx < input_conf.w; w_idx++) {
-	// 		for (int c_idx = 0; c_idx < input_conf.c; c_idx++) {
-	// 			int out_h_idx = h_base + h_idx;
-	// 			int out_w_idx = w_base + w_idx;
+Data_conf get_input_dependency(Data_conf output_conf, Conv_conf conv_cfg) {
 
-	// 			out[(out_h_idx * output_conf.w + out_w_idx) * output_conf.c + c_idx]
-	// 					= in[(h_idx * input_conf.w + w_idx) * input_conf.c + c_idx];
-	// 		}
-	// 	}
-	// }
+	Data_conf ret;
+
+	ret.h = (output_conf.h - 1) * conv_cfg.stride - 2 * conv_cfg.pad + conv_cfg.h;
+	ret.w = (output_conf.w - 1) * conv_cfg.stride - 2 * conv_cfg.pad + conv_cfg.w;
+
+	return ret;
 }
 
 void alloc_patch(float *patch, Data_conf input_conf, int num_tiles, Conv_conf conv_cfg) {
@@ -201,7 +184,7 @@ void alloc_patch(float *patch, Data_conf input_conf, int num_tiles, Conv_conf co
 
 //fill an array with random array
 
-void rand_filler(float *in, int size) {
+void create_rand_array(float *in, int size) {
 	srand(time(0));
 
 	for (int i = 0; i < size; i++)

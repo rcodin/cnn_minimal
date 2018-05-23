@@ -26,10 +26,10 @@ int main() {
 	size_t bytes = sizeof(float);
 	int alignment = bytes * 8;
 
-	bool tiled = true;
+	bool tiled = false;
 
-	int h_num_tiles = 56;
-	int w_num_tiles = 56;
+	int h_num_tiles = 8;
+	int w_num_tiles = 8;
 
 	Conv_conf conv11_tiled_conf = {3, 3, 1, 0};
 
@@ -122,7 +122,7 @@ int main() {
 				TILE_BASE tile_base = {h_base, w_base};
 
 				load_tile(input11, input11_conf, tile_base, h_num_tiles, 
-							input11_tiled, input11_tiled_conf);
+							conv11_conf, input11_tiled, input11_tiled_conf);
 
 				conv_im2row(input11_tiled, output11_tiled, conv11_weights, conv11_biases, conv11_tiled_conf,
 					input11_tiled_conf, output11_tiled_conf);
@@ -141,7 +141,7 @@ int main() {
 				TILE_BASE tile_base = {h_base, w_base};
 
 				load_tile(input12, input12_conf, tile_base, h_num_tiles, 
-							input12_tiled, input12_tiled_conf);
+							conv12_conf, input12_tiled, input12_tiled_conf);
 
 				conv_im2row(input12_tiled, output12_tiled, conv12_weights, conv12_biases, conv12_tiled_conf,
 					input12_tiled_conf, output12_tiled_conf);
@@ -163,9 +163,9 @@ int main() {
 	}
 
 
-	std::chrono::duration<double> elapsed_time = end-start;
+	// std::chrono::duration<double> elapsed_time = end-start;
 
-	cout<<elapsed_time.count()<<endl;
+	// cout<<elapsed_time.count()<<endl;
 
 	// for (int i = 0; i < output12_conf.h; i++) {
 	// 	for (int j = 0; j < output12_conf.h; j++) {
